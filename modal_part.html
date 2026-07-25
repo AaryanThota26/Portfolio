@@ -1,0 +1,39 @@
+<div id="project-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProjectModal()"></div>
+    <div class="bg-[#111] border border-white/10 p-10 md:p-16 max-w-3xl w-full mx-4 rounded-3xl relative">
+        <button onclick="closeProjectModal()" class="absolute top-8 right-8 text-white/50 hover:text-white text-lg uppercase tracking-widest font-bold">Close</button>
+        <h2 id="modal-title" class="display-font text-5xl font-bold mb-6"></h2>
+        <div id="modal-content" class="text-xl font-light text-gray-300 leading-relaxed space-y-4"></div>
+    </div>
+</div>
+
+<script>
+    const projectDetails = {
+        task: {
+            title: "Cloud-Native Task Tracker",
+            content: "Full-stack application utilizing FastAPI, React, PostgreSQL, and Redis. Features include Redis caching with TTL-based invalidation, containerization using Docker, and automated CI/CD deployments through GitHub Actions and Helm charts on GCP. <a href='https://taskmonitor.org' class='text-blue-400 block mt-4'>View Live Deployment ↗</a>"
+        },
+        maritime: {
+            title: "Maritime Vessel Tracking",
+            content: "Real-time ship tracking and port analytics platform. Built using Django & React.js. Designed complex relational database models to categorize 1000+ records and integrated live weather shipping APIs."
+        },
+        stock: {
+            title: "Stock Price Prediction",
+            content: "Machine learning system analyzing historical trends. Trained Linear Regression, Random Forest, and LSTM models, evaluated using MAE and R² metrics to predict price trajectories."
+        }
+    };
+
+    function openProjectModal(projectId) {
+        document.getElementById('modal-title').innerText = projectDetails[projectId].title;
+        document.getElementById('modal-content').innerHTML = projectDetails[projectId].content;
+        const modal = document.getElementById('project-modal');
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        lenis.stop();
+    }
+
+    function closeProjectModal() {
+        const modal = document.getElementById('project-modal');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        lenis.start();
+    }
+</script>
