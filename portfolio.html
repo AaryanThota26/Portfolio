@@ -38,12 +38,18 @@
 
         /* Background Canvas */
         #bg-canvas {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 0;
+            pointer-events: none; z-index: 0;
             opacity: 0.45;
+        }
+
+        /* Glitter Canvas */
+        #glitter-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9997;
+            display: block;
         }
 
         /* Custom Cursor */
@@ -115,7 +121,7 @@
         @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
 
         /* Horizontal Scroll Container */
-        .horizontal-scroll-wrapper { width: 300vw; height: 100vh; display: flex; flex-wrap: nowrap; }
+        .horizontal-scroll-wrapper { width: 400vw; height: 100vh; display: flex; flex-wrap: nowrap; }
 
         .section-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: #888; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 2rem; }
         .reveal-up { opacity: 0; transform: translateY(60px); }
@@ -125,21 +131,28 @@
         .skill-fill { position: absolute; top:0; left:0; height: 100%; background: var(--light); width: 0%; }
 
         .content-layer { position: relative; z-index: 1; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
 
     <canvas id="bg-canvas"></canvas>
+    <canvas id="glitter-canvas"></canvas>
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
     <!-- Modal -->
     <div id="project-modal" class="modal transition-opacity duration-300">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="bg-[#111] border border-white/10 p-10 md:p-16 max-w-3xl w-full mx-4 rounded-3xl relative z-10">
+        <div class="bg-[#111] border border-white/10 p-10 md:p-16 max-w-3xl w-full mx-4 rounded-3xl relative z-10 max-h-[85vh] overflow-y-auto custom-scrollbar">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-white/50 hover:text-white text-lg uppercase tracking-widest font-bold">Close</button>
-            <h2 id="modal-title" class="display-font text-5xl font-bold mb-6"></h2>
-            <div id="modal-content" class="text-xl font-light text-gray-300 leading-relaxed space-y-4"></div>
+            <h2 id="modal-title" class="display-font text-4xl md:text-5xl font-bold mb-2"></h2>
+            <div class="w-16 h-1 bg-[var(--accent)] mb-6 rounded-full"></div>
+            <div id="modal-content" class="text-base font-light text-gray-300 leading-relaxed space-y-4"></div>
         </div>
     </div>
 
@@ -273,23 +286,31 @@
                     <button onclick="showModal('task')" class="cursor-pointer hover-target text-left group">
                         <div class="text-6xl md:text-8xl font-bold display-font mb-8">01.</div>
                         <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">Cloud-Native<br>Task Tracker</h3>
-                        <p class="text-gray-400 text-xl font-light">FastAPI, React, PostgreSQL & GCP CI/CD. Click for details.</p>
+                        <p class="text-gray-400 text-xl font-light">A scalable task management platform with cloud-native architecture and automated deployment.</p>
+                    </button>
+                </div>
+
+                <div class="w-screen h-screen flex flex-col justify-center items-center px-8 md:px-32 relative">
+                    <button onclick="showModal('events')" class="cursor-pointer hover-target text-left group">
+                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">02.</div>
+                        <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">Event Management<br>System</h3>
+                        <p class="text-gray-400 text-xl font-light">A full-stack event platform where organizers publish, admins curate, and users register in one click.</p>
                     </button>
                 </div>
 
                 <div class="w-screen h-screen flex flex-col justify-center items-center px-8 md:px-32 relative">
                     <button onclick="showModal('maritime')" class="cursor-pointer hover-target text-left group">
-                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">02.</div>
+                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">03.</div>
                         <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">Maritime Vessel<br>Tracking</h3>
-                        <p class="text-gray-400 text-xl font-light">Django, React & Real-time API mapping. Click for details.</p>
+                        <p class="text-gray-400 text-xl font-light">Real-time vessel tracking and port analytics with interactive map visualization.</p>
                     </button>
                 </div>
 
                 <div class="w-screen h-screen flex flex-col justify-center items-center px-8 md:px-32 relative">
                     <button onclick="showModal('stock')" class="cursor-pointer hover-target text-left group">
-                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">03.</div>
+                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">04.</div>
                         <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">Stock Price<br>Prediction ML</h3>
-                        <p class="text-gray-400 text-xl font-light">Machine Learning & Data analytics. Click for details.</p>
+                        <p class="text-gray-400 text-xl font-light">Predicts stock market trends using machine learning and historical market data.</p>
                     </button>
                 </div>
             </div>
@@ -308,35 +329,22 @@
 
     <!-- ── Logic ────────────────────────────────────────────────────────── -->
     <script>
-        // 3D Background Logic
+        // ── 3D Wave Background ────────────────────────────────────
         const canvas = document.getElementById('bg-canvas');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x070708, 0.015);
-
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.set(0, 4, 15);
         camera.lookAt(0, 0, 0);
-
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         renderer.setClearColor(0x070708, 1);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        const cols = 45;
-        const rows = 45;
-        const width = 40;
-        const depth = 40;
-
+        const cols = 45, rows = 45, width = 40, depth = 40;
         const waveGeo = new THREE.PlaneGeometry(width, depth, cols - 1, rows - 1);
         waveGeo.rotateX(-Math.PI / 2);
-
-        const waveMat = new THREE.MeshBasicMaterial({
-            color: 0x33333b,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.18,
-        });
-
+        const waveMat = new THREE.MeshBasicMaterial({ color: 0x33333b, wireframe: true, transparent: true, opacity: 0.18 });
         const waveMesh = new THREE.Mesh(waveGeo, waveMat);
         scene.add(waveMesh);
 
@@ -346,8 +354,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        let mouseX = 0, mouseY = 0;
-        let targetX = 0, targetY = 0;
+        let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth) - 0.5;
             mouseY = (e.clientY / window.innerHeight) - 0.5;
@@ -359,7 +366,6 @@
         function animateWebGL() {
             requestAnimationFrame(animateWebGL);
             const time = clock.getElapsedTime();
-
             for (let i = 0; i < posAttribute.count; i++) {
                 const x = posAttribute.getX(i);
                 const z = posAttribute.getZ(i);
@@ -368,38 +374,176 @@
                 posAttribute.setY(i, y);
             }
             posAttribute.needsUpdate = true;
-
             targetX += (mouseX - targetX) * 0.05;
             targetY += (mouseY - targetY) * 0.05;
-
             waveMesh.rotation.y = targetX * 0.25;
             waveMesh.rotation.z = targetY * 0.15;
-
             const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
             camera.position.z = 15 - (scrollPercent * 6);
             camera.position.y = 4 + (scrollPercent * 4);
-
             renderer.render(scene, camera);
         }
         animateWebGL();
 
+        // ── Glitter (simple) ──────────────────────────────────────
+        const glitterCanvas = document.getElementById('glitter-canvas');
+        const gCtx = glitterCanvas.getContext('2d');
+        function resizeGlitter() {
+            glitterCanvas.width = window.innerWidth;
+            glitterCanvas.height = window.innerHeight;
+        }
+        resizeGlitter();
+        window.addEventListener('resize', resizeGlitter);
+
+        const particles = [];
+        let lastGX = 0, lastGY = 0;
+
+        function spawnGlitter(x, y) {
+            for (let i = 0; i < 2; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 0.5 + Math.random() * 1.5;
+                particles.push({
+                    x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 0.5,
+                    size: 1 + Math.random() * 1.5,
+                    life: 1,
+                    decay: 0.02 + Math.random() * 0.02
+                });
+            }
+        }
+
+        function animateGlitter() {
+            gCtx.clearRect(0, 0, glitterCanvas.width, glitterCanvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.02;
+                p.life -= p.decay;
+                if (p.life <= 0) { particles.splice(i, 1); continue; }
+                gCtx.globalAlpha = p.life * 0.6;
+                gCtx.fillStyle = '#ffffff';
+                gCtx.beginPath();
+                gCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                gCtx.fill();
+            }
+            gCtx.globalAlpha = 1;
+            requestAnimationFrame(animateGlitter);
+        }
+        animateGlitter();
+
+        window.addEventListener('mousemove', (e) => {
+            const dx = e.clientX - lastGX;
+            const dy = e.clientY - lastGY;
+            if (Math.sqrt(dx * dx + dy * dy) > 4) {
+                spawnGlitter(e.clientX, e.clientY);
+                lastGX = e.clientX;
+                lastGY = e.clientY;
+            }
+        });
+
         // Project Modal Logic
         const projectData = {
-            task: { title: "Cloud-Native Task Tracker", content: "Built a cloud-native Task Tracker application using FastAPI, React, PostgreSQL, and Redis. Features: Redis caching with TTL-based invalidation, containerization using Docker, and automated CI/CD deployments via GitHub Actions and Helm on GCP." },
-            maritime: { title: "Maritime Vessel Tracking & Safety Platform", content: "Full-stack web application for real-time ship tracking and port analytics. Tech stack: Django, React.js. Features: Relational databases for 1000+ records, integrated shipping/weather APIs, and secure JWT authentication for authorized analytics access." },
-            stock: { title: "Stock Price Prediction", content: "Machine Learning system to predict stock prices. Trained Linear Regression, Random Forest, and LSTM models with historical trends. Metrics: MAE and R²." }
+            task: {
+                title: "Cloud-Native Task Tracker on GCP",
+                overview: "Developed a cloud-native task management application that enables users to efficiently create, organize, update, and track tasks through a modern web interface. The application was designed with scalability and performance in mind by combining a FastAPI backend with a React frontend and PostgreSQL database.\n\nTo improve application performance, Redis caching with TTL-based invalidation was implemented, reducing unnecessary database requests. The project also features containerized deployment using Docker and a fully automated CI/CD pipeline powered by GitHub Actions. Deployment workflows were managed using Helm charts and Google Artifact Registry on Google Cloud Platform (GCP), demonstrating modern cloud-native development practices.",
+                features: [
+                    "Cloud-native task management system",
+                    "RESTful APIs built with FastAPI",
+                    "Redis caching with TTL-based invalidation",
+                    "Docker containerization",
+                    "Automated CI/CD using GitHub Actions",
+                    "Deployment workflow using Helm and GCP"
+                ],
+                techStack: "FastAPI • React • PostgreSQL • Redis • Docker • GitHub Actions • Helm • Google Cloud Platform (GCP)",
+                github: "https://github.com/AaryanThota26/task-tracker-api.git",
+                live: "https://taskmonitor.org"
+            },
+            events: {
+                title: "Event Management System",
+                overview: "A full-stack event platform with role-based access — organizers publish events and track registrations, admins curate a moderation queue, and users register in one click. Every event enforces a hard capacity limit, duplicate sign-ups are prevented at the database level, and the entire flow is protected by JWT authentication with bcrypt password hashing.\n\nThe API is self-documented with Swagger UI, and the app is deployed end-to-end — React on Vercel, FastAPI on Render, PostgreSQL on Neon, with transactional password-reset emails via Resend.",
+                features: [
+                    "Secure authentication with bcrypt hashing and JWT access tokens",
+                    "Role-based access control (User, Organizer, Admin)",
+                    "Event approval workflow (pending → approved/rejected)",
+                    "One-click registration with capacity and duplicate checks",
+                    "Password reset flow with single-use tokens via email",
+                    "RESTful API with Swagger UI documentation"
+                ],
+                techStack: "React 19 (Vite) • Tailwind CSS • FastAPI • PostgreSQL (Neon) • SQLAlchemy • JWT • Bcrypt • Axios • Vercel • Render",
+                github: "https://github.com/AaryanThota26/Event-Management-System.git",
+                live: "https://event-management-system-ruby-gamma.vercel.app"
+            },
+            maritime: {
+                title: "Maritime Vessel Tracking & Safety Platform",
+                overview: "Built a full-stack web application for monitoring maritime vessels and analyzing port operations in real time. The platform provides an interactive interface for tracking ship movements while offering insights into port activities to improve operational visibility.\n\nDesigned relational database models capable of securely storing and organizing over 1,000 ship, port, and trip records. Integrated live weather and shipping APIs into an interactive map interface, enabling users to visualize vessel locations and environmental conditions in real time.",
+                features: [
+                    "Real-time vessel tracking",
+                    "Port analytics dashboard",
+                    "Interactive map visualization",
+                    "Live weather & shipping API integration",
+                    "Secure relational database design",
+                    "Management of 1000+ maritime records"
+                ],
+                techStack: "Django • Django REST Framework • React.js • PostgreSQL • REST APIs • HTML • CSS • JavaScript",
+                github: "https://github.com/springboardmentor0316/Maritime-Vessel-Tracking-Team-2.git",
+                live: null
+            },
+            stock: {
+                title: "Stock Price Prediction Using Machine Learning",
+                overview: "Developed a machine learning application that predicts stock market prices using historical financial data. The project focused on analyzing market trends through data preprocessing, feature engineering, model training, and performance evaluation.\n\nImplemented and compared multiple machine learning algorithms, including Linear Regression, Random Forest, and Long Short-Term Memory (LSTM) networks. Model performance was evaluated using Mean Absolute Error (MAE) and R² Score to identify the most effective approach for stock price prediction.",
+                features: [
+                    "Historical stock market analysis",
+                    "Data preprocessing and feature engineering",
+                    "Multiple ML model implementation",
+                    "Model comparison and evaluation",
+                    "Performance metrics using MAE & R² Score",
+                    "Predictive trend analysis"
+                ],
+                techStack: "Python • Pandas • NumPy • Scikit-learn • TensorFlow/Keras • Matplotlib",
+                github: "https://github.com/AaryanThota26/stock-price-prediction-.git",
+                live: null
+            }
         };
 
         function showModal(id) {
-            document.getElementById('modal-title').innerText = projectData[id].title;
-            document.getElementById('modal-content').innerText = projectData[id].content;
+            const data = projectData[id];
+            document.getElementById('modal-title').innerText = data.title;
+
+            let featuresHtml = data.features.map(f => `<span class="block before:content-['✓_'] text-gray-300">${f}</span>`).join('');
+
+            let linksHtml = `<div class="flex gap-4 mt-6">`;
+            linksHtml += `<a href="${data.github}" target="_blank" class="inline-block px-5 py-2 border border-white/20 rounded-lg text-sm uppercase tracking-widest hover:bg-white hover:text-black transition font-semibold">🔗 GitHub Repository</a>`;
+            if (data.live) {
+                linksHtml += `<a href="${data.live}" target="_blank" class="inline-block px-5 py-2 bg-[var(--accent)] rounded-lg text-sm uppercase tracking-widest hover:brightness-110 transition font-semibold">🌐 Live Demo</a>`;
+            }
+            linksHtml += `</div>`;
+
+            document.getElementById('modal-content').innerHTML = `
+                <p class="text-gray-400 leading-relaxed whitespace-pre-line">${data.overview}</p>
+                <div class="mt-6">
+                    <h4 class="text-white font-bold text-lg mb-2">✨ Key Features</h4>
+                    <div class="space-y-1">${featuresHtml}</div>
+                </div>
+                <div class="mt-4">
+                    <h4 class="text-white font-bold text-lg mb-2">🛠 Tech Stack</h4>
+                    <p class="text-gray-300">${data.techStack}</p>
+                </div>
+                ${linksHtml}
+            `;
+
             document.getElementById('project-modal').classList.add('open');
-            lenis.stop(); // Stop scroll when modal is open
+            document.body.style.overflow = 'hidden';
+            lenis.stop();
         }
         function closeModal() {
             document.getElementById('project-modal').classList.remove('open');
-            lenis.start(); // Re-enable scroll
+            document.body.style.overflow = '';
+            lenis.start();
         }
+
+        document.getElementById('project-modal').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
 
         // --- Standard Scripts (Lenis/GSAP) ---
         const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), direction: 'vertical', smooth: true });
@@ -408,9 +552,9 @@
         gsap.registerPlugin(ScrollTrigger);
 
         const scrollWrapper = document.getElementById('projects-scroll');
-        gsap.to(scrollWrapper, { xPercent: -66.6666, ease: "none", scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 0.5, end: () => "+=" + scrollWrapper.offsetWidth } });
+        gsap.to(scrollWrapper, { xPercent: -75, ease: "none", scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 0.5, end: () => "+=" + scrollWrapper.offsetWidth } });
 
-        // Hero/Cursor/Animations...
+        // Cursor
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         window.addEventListener('mousemove', (e) => {
@@ -418,6 +562,7 @@
             cursorOutline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 300, fill: "forwards" });
         });
 
+        // Hero text reveal
         function splitText(id, text) {
             const el = document.getElementById(id);
             text.split('').forEach(char => {
