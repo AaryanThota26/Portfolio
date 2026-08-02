@@ -140,7 +140,7 @@
         @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
 
         /* Horizontal Scroll Container */
-        .horizontal-scroll-wrapper { width: 400vw; height: 100vh; display: flex; flex-wrap: nowrap; }
+        .horizontal-scroll-wrapper { width: 300vw; height: 100vh; display: flex; flex-wrap: nowrap; }
 
         .section-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: #888; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 2rem; }
         .reveal-up { opacity: 0; transform: translateY(60px); }
@@ -275,8 +275,8 @@
                                 </div>
                             </div>
                             <div class="resume-actions">
-                                <a href="resumes/Aaryan_Thota_ATS_Resume.pdf" target="_blank" rel="noopener" class="resume-pill hover-target">👁 View</a>
-                                <a href="resumes/Aaryan_Thota_ATS_Resume.pdf" download="Aaryan_Thota_ATS_Resume.pdf" class="resume-pill hover-target">⬇ Download</a>
+                                <a href="resume/Aaryan_Thota_ATS_Resume.pdf" target="_blank" rel="noopener" class="resume-pill hover-target">👁 View</a>
+                                <a href="resume/Aaryan_Thota_ATS_Resume.pdf" download="Aaryan_Thota_ATS_Resume.pdf" class="resume-pill hover-target">⬇ Download</a>
                             </div>
                         </div>
                         <div class="resume-divider"></div>
@@ -289,8 +289,8 @@
                                 </div>
                             </div>
                             <div class="resume-actions">
-                                <a href="resumes/Aaryan_Thota_Visual_Resume.pdf" target="_blank" rel="noopener" class="resume-pill hover-target">👁 View</a>
-                                <a href="resumes/Aaryan_Thota_Visual_Resume.pdf" download="Aaryan_Thota_Visual_Resume.pdf" class="resume-pill hover-target">⬇ Download</a>
+                                <a href="resume/Aaryan_Thota_Canva_Resume.pdf" target="_blank" rel="noopener" class="resume-pill hover-target">👁 View</a>
+                                <a href="resume/Aaryan_Thota_Canva_Resume.pdf" download="Aaryan_Thota_Visual_Resume.pdf" class="resume-pill hover-target">⬇ Download</a>
                             </div>
                         </div>
                     </div>
@@ -356,6 +356,7 @@
                 <div class="space-y-12">
                      <div class="reveal-up skill-block"><h3 class="text-2xl font-bold mb-4 font-display">DevOps</h3>
                      <div class="mb-4"><div class="flex justify-between text-sm text-gray-400 uppercase tracking-widest mb-1"><span>GCP / Docker / Kubernetes</span></div><div class="skill-line"><div class="skill-fill" data-width="85%"></div></div></div>
+                     <div class="mb-4"><div class="flex justify-between text-sm text-gray-400 uppercase tracking-widest mb-1"><span>GitHub Actions</span></div><div class="skill-line"><div class="skill-fill" data-width="80%"></div></div></div>
                      <div class="mb-4"><div class="flex justify-between text-sm text-gray-400 uppercase tracking-widest mb-1"><span>CI/CD & Helm</span></div><div class="skill-line"><div class="skill-fill" data-width="75%"></div></div></div>
                      <div class="mb-4"><div class="flex justify-between text-sm text-gray-400 uppercase tracking-widest mb-1"><span>Google Artifact Registry</span></div><div class="skill-line"><div class="skill-fill" data-width="70%"></div></div></div></div>
                 </div>
@@ -436,13 +437,6 @@
                     </button>
                 </div>
 
-                <div class="project-panel w-screen h-screen flex flex-col justify-center items-center px-8 md:px-32 relative">
-                    <button onclick="showModal('stock')" class="cursor-pointer hover-target text-left group">
-                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">04.</div>
-                        <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">Stock Price<br>Prediction ML</h3>
-                        <p class="text-gray-400 text-xl font-light">Predicts stock market trends using machine learning and historical market data.</p>
-                    </button>
-                </div>
             </div>
         </section>
 
@@ -577,62 +571,84 @@
         const projectData = {
             task: {
                 title: "Cloud-Native Task Tracker on GCP",
-                overview: "Developed a cloud-native task management application that enables users to efficiently create, organize, update, and track tasks through a modern web interface. The application was designed with scalability and performance in mind by combining a FastAPI backend with a React frontend and PostgreSQL database.\n\nTo improve application performance, Redis caching with TTL-based invalidation was implemented, reducing unnecessary database requests. The project also features containerized deployment using Docker and a fully automated CI/CD pipeline powered by GitHub Actions. Deployment workflows were managed using Helm charts and Google Artifact Registry on Google Cloud Platform (GCP), demonstrating modern cloud-native development practices.",
+                overview: "Cloud-native task management platform built with a FastAPI backend, React frontend, and PostgreSQL, deployed end-to-end on Google Cloud Platform (GCP). Users sign in via Google OAuth and manage tasks through a responsive web interface.",
+                problem: "Solves the latency and operational complexity of running a task app in production. Redis caching with TTL-based invalidation cuts redundant database reads, while Terraform, Helm, and GitHub Actions remove manual, error-prone infrastructure and deployment steps.",
                 features: [
-                    "Cloud-native task management system",
-                    "RESTful APIs built with FastAPI",
-                    "Redis caching with TTL-based invalidation",
-                    "Docker containerization",
-                    "Automated CI/CD using GitHub Actions",
-                    "Deployment workflow using Helm and GCP"
+                    "Task CRUD with status, priority, and search filters",
+                    "Google OAuth authentication",
+                    "Redis caching with automatic TTL invalidation",
+                    "Docker containerization of frontend and backend",
+                    "Automated CI/CD pipeline via GitHub Actions",
+                    "Helm-packaged deployment on GKE with HTTPS"
                 ],
-                techStack: "FastAPI • React • PostgreSQL • Redis • Docker • GitHub Actions • Helm • Google Cloud Platform (GCP)",
+                techStack: "FastAPI • React • PostgreSQL • Redis • Docker • Kubernetes (GKE) • Helm • Terraform • GitHub Actions • Google Artifact Registry • Google Cloud Platform",
+                architecture: {
+                    frontend: "React (Vite) SPA served behind GKE Ingress with managed SSL",
+                    backend: "FastAPI REST API with SQLAlchemy ORM and a Redis caching layer",
+                    database: "PostgreSQL StatefulSet on GKE, with Redis for query caching"
+                },
+                deployment: "Containerized with Docker, images stored in Google Artifact Registry, CI/CD automated with GitHub Actions, and deployed via Helm charts on GKE with a custom domain — live at taskmonitor.org.",
+                outcome: "End-to-end cloud-native engineering: IaC with Terraform, Kubernetes orchestration, Helm packaging, GitHub Actions pipelines, and debugging production issues (SSL, persistence, Helm migration, timezone bugs).",
+                endpoints: [
+                    { group: "Tasks", routes: ["GET /api/tasks", "POST /api/tasks", "GET /api/tasks/{id}", "PUT /api/tasks/{id}", "DELETE /api/tasks/{id}"] }
+                ],
                 github: "https://github.com/AaryanThota26/task-tracker-api.git",
                 live: "https://taskmonitor.org"
             },
             events: {
                 title: "Event Management System",
-                overview: "A full-stack event platform with role-based access — organizers publish events and track registrations, admins curate a moderation queue, and users register in one click. Every event enforces a hard capacity limit, duplicate sign-ups are prevented at the database level, and the entire flow is protected by JWT authentication with bcrypt password hashing.\n\nThe API is self-documented with Swagger UI, and the app is deployed end-to-end — React on Vercel, FastAPI on Render, PostgreSQL on Neon, with transactional password-reset emails via Resend.",
+                overview: "Full-stack event platform with role-based access — organizers publish events and track registrations, admins curate a moderation queue, and users register in one click. Deployed end-to-end: React on Vercel, FastAPI on Render, PostgreSQL on Neon.",
+                problem: "Replaces spreadsheets and email threads for event planning. Solves unmoderated content, capacity overbooking, and duplicate sign-ups — business rules live in the service layer, enforced by a database-level UNIQUE (user_id, event_id) constraint.",
                 features: [
-                    "Secure authentication with bcrypt hashing and JWT access tokens",
+                    "Secure authentication: bcrypt hashing + HS256 JWT with role claims",
                     "Role-based access control (User, Organizer, Admin)",
-                    "Event approval workflow (pending → approved/rejected)",
+                    "Moderation-first lifecycle: pending → approved/rejected",
                     "One-click registration with capacity and duplicate checks",
-                    "Password reset flow with single-use tokens via email",
-                    "RESTful API with Swagger UI documentation"
+                    "Password reset via single-use, hashed email tokens",
+                    "Self-documented API with Swagger UI / ReDoc"
                 ],
-                techStack: "React 19 (Vite) • Tailwind CSS • FastAPI • PostgreSQL (Neon) • SQLAlchemy • JWT • Bcrypt • Axios • Vercel • Render",
+                techStack: "React 19 (Vite) • Tailwind CSS • FastAPI • PostgreSQL (Neon) • SQLAlchemy • JWT • Bcrypt • Axios • Resend • Vercel • Render",
+                architecture: {
+                    frontend: "React 19 SPA with Tailwind CSS and Axios, deployed on Vercel",
+                    backend: "FastAPI REST API with service-layer business rules and JWT auth, deployed on Render",
+                    database: "PostgreSQL on Neon via SQLAlchemy ORM; UNIQUE constraint as duplicate-safety backstop"
+                },
+                deployment: "Deployed end-to-end — React on Vercel, FastAPI on Render, PostgreSQL on Neon, and transactional password-reset emails via Resend.",
+                outcome: "Production full-stack skills: layered security, two-layer rule enforcement, Pydantic-driven API documentation, and managing a deployed multi-service stack.",
+                endpoints: [
+                    { group: "Authentication", routes: ["POST /api/auth/signup", "POST /api/auth/login", "POST /api/auth/forgot-password", "POST /api/auth/reset-password"] },
+                    { group: "Core Features", routes: ["GET /api/events", "POST /api/events", "GET /api/events/{id}", "POST /api/events/{id}/register", "GET /api/registrations/my"] },
+                    { group: "Admin", routes: ["PATCH /api/events/{id}/approve", "PATCH /api/events/{id}/reject", "GET /api/events/{id}/participants"] }
+                ],
                 github: "https://github.com/AaryanThota26/Event-Management-System.git",
                 live: "https://event-management-system-ruby-gamma.vercel.app"
             },
             maritime: {
                 title: "Maritime Vessel Tracking & Safety Platform",
-                overview: "Built a full-stack web application for monitoring maritime vessels and analyzing port operations in real time. The platform provides an interactive interface for tracking ship movements while offering insights into port activities to improve operational visibility.\n\nDesigned relational database models capable of securely storing and organizing over 1,000 ship, port, and trip records. Integrated live weather and shipping APIs into an interactive map interface, enabling users to visualize vessel locations and environmental conditions in real time.",
+                overview: "Full-stack maritime situational-awareness platform for live vessel tracking, cargo classification, port congestion analytics, and safety overlays — built from open AIS and weather data (collaborative project, 3 developers, Springboard Mentorship).",
+                problem: "Operators lacked a unified tool to monitor global vessel activity. The platform combines AIS positions, cargo classification, port congestion indexes, and weather/hazard overlays in one interactive dashboard to improve maritime safety and operational visibility.",
                 features: [
-                    "Real-time vessel tracking",
-                    "Port analytics dashboard",
-                    "Interactive map visualization",
-                    "Live weather & shipping API integration",
-                    "Secure relational database design",
-                    "Management of 1000+ maritime records"
+                    "Live AIS vessel tracking on an interactive map",
+                    "Cargo classification with color-coded vessel markers",
+                    "Port congestion analytics with congestion index and trends",
+                    "Safety overlays: weather, hazards, restricted zones, TSS crossings",
+                    "Click-to-view telemetry: MMSI, SOG, COG, heading, flag, destination",
+                    "JWT authentication and Swagger API documentation"
                 ],
-                techStack: "Django • Django REST Framework • React.js • PostgreSQL • REST APIs • HTML • CSS • JavaScript",
+                techStack: "Django • Django REST Framework • React.js • PostgreSQL • JWT (SimpleJWT) • Leaflet • Chart.js • REST APIs • Python • JavaScript",
+                architecture: {
+                    frontend: "JavaScript dashboard with a Leaflet map and Chart.js analytics panels",
+                    backend: "Django + DRF with domain apps (vessels, ports, voyages, events, safety)",
+                    database: "PostgreSQL relational models for 1,000+ ship, port, and trip records"
+                },
+                deployment: null,
+                outcome: "Collaborated across backend and frontend with 3 developers; designed relational schemas and integrated live AIS/weather data streams into a real-time map interface.",
+                endpoints: [
+                    { group: "Authentication", routes: ["POST /api/auth/login/", "POST /api/auth/refresh/"] },
+                    { group: "Core Features", routes: ["GET /api/vessels/", "GET /api/vessels/live-all/", "GET /api/ports/dashboard/", "GET /api/stats/"] },
+                    { group: "Safety & Events", routes: ["GET /api/safety/overlays/", "GET /api/events/"] }
+                ],
                 github: "https://github.com/springboardmentor0316/Maritime-Vessel-Tracking-Team-2.git",
-                live: null
-            },
-            stock: {
-                title: "Stock Price Prediction Using Machine Learning",
-                overview: "Developed a machine learning application that predicts stock market prices using historical financial data. The project focused on analyzing market trends through data preprocessing, feature engineering, model training, and performance evaluation.\n\nImplemented and compared multiple machine learning algorithms, including Linear Regression, Random Forest, and Long Short-Term Memory (LSTM) networks. Model performance was evaluated using Mean Absolute Error (MAE) and R² Score to identify the most effective approach for stock price prediction.",
-                features: [
-                    "Historical stock market analysis",
-                    "Data preprocessing and feature engineering",
-                    "Multiple ML model implementation",
-                    "Model comparison and evaluation",
-                    "Performance metrics using MAE & R² Score",
-                    "Predictive trend analysis"
-                ],
-                techStack: "Python • Pandas • NumPy • Scikit-learn • TensorFlow/Keras • Matplotlib",
-                github: "https://github.com/AaryanThota26/stock-price-prediction-.git",
                 live: null
             }
         };
@@ -646,7 +662,33 @@
             lastFocused = document.activeElement;
             document.getElementById('modal-title').innerText = data.title;
 
+            const sectionHead = (icon, label) => `<h4 class="text-white font-bold text-lg mb-2">${icon} ${label}</h4>`;
+
             let featuresHtml = data.features.map(f => `<span class="block before:content-['✓_'] text-gray-300">${f}</span>`).join('');
+
+            const archHtml = `
+                <p class="text-gray-300"><span class="text-white font-semibold">Frontend:</span> ${data.architecture.frontend}</p>
+                <p class="text-gray-300"><span class="text-white font-semibold">Backend:</span> ${data.architecture.backend}</p>
+                <p class="text-gray-300"><span class="text-white font-semibold">Database:</span> ${data.architecture.database}</p>`;
+
+            let deploymentHtml = '';
+            if (data.deployment) {
+                deploymentHtml = `
+                <div class="mt-5">
+                    ${sectionHead('🚀', 'Deployment')}
+                    <p class="text-gray-300">${data.deployment}</p>
+                </div>`;
+            }
+
+            let endpointsHtml = '';
+            if (data.endpoints) {
+                const endpointsBlock = data.endpoints.map(g => `${g.group}\n\n${g.routes.join('\n')}`).join('\n\n');
+                endpointsHtml = `
+                <div class="mt-5">
+                    ${sectionHead('🔌', 'Application Endpoints')}
+                    <pre class="mt-2 bg-black/40 border border-white/10 rounded-lg p-4 text-sm font-mono text-gray-300 whitespace-pre overflow-x-auto custom-scrollbar">${endpointsBlock}</pre>
+                </div>`;
+            }
 
             let linksHtml = `<div class="flex gap-4 mt-6">`;
             linksHtml += `<a href="${data.github}" target="_blank" class="inline-block px-5 py-2 border border-white/20 rounded-lg text-sm uppercase tracking-widest hover:bg-white hover:text-black transition font-semibold">🔗 GitHub Repository</a>`;
@@ -656,15 +698,32 @@
             linksHtml += `</div>`;
 
             document.getElementById('modal-content').innerHTML = `
-                <p class="text-gray-400 leading-relaxed whitespace-pre-line">${data.overview}</p>
-                <div class="mt-6">
-                    <h4 class="text-white font-bold text-lg mb-2">✨ Key Features</h4>
+                <div>
+                    ${sectionHead('📖', 'Project Overview')}
+                    <p class="text-gray-400 leading-relaxed">${data.overview}</p>
+                </div>
+                <div class="mt-5">
+                    ${sectionHead('🎯', 'Problem Solved')}
+                    <p class="text-gray-400 leading-relaxed">${data.problem}</p>
+                </div>
+                <div class="mt-5">
+                    ${sectionHead('✨', 'Key Features')}
                     <div class="space-y-1">${featuresHtml}</div>
                 </div>
-                <div class="mt-4">
-                    <h4 class="text-white font-bold text-lg mb-2">🛠 Tech Stack</h4>
+                <div class="mt-5">
+                    ${sectionHead('🛠', 'Technologies Used')}
                     <p class="text-gray-300">${data.techStack}</p>
                 </div>
+                <div class="mt-5">
+                    ${sectionHead('🏗', 'Architecture')}
+                    ${archHtml}
+                </div>
+                ${deploymentHtml}
+                <div class="mt-5">
+                    ${sectionHead('📈', 'Outcome / Learning')}
+                    <p class="text-gray-300">${data.outcome}</p>
+                </div>
+                ${endpointsHtml}
                 ${linksHtml}
             `;
 
@@ -738,7 +797,7 @@
         const scrollWrapper = document.getElementById('projects-scroll');
         const mm = gsap.matchMedia();
         mm.add("(min-width: 1024px)", () => {
-            const tween = gsap.to(scrollWrapper, { xPercent: -75, ease: "none", scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 0.5, end: () => "+=" + scrollWrapper.offsetWidth } });
+            const tween = gsap.to(scrollWrapper, { xPercent: -66.6667, ease: "none", scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 0.5, end: () => "+=" + scrollWrapper.offsetWidth } });
             return () => { if (tween.scrollTrigger) tween.scrollTrigger.kill(); };
         });
 
