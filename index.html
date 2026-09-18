@@ -140,7 +140,7 @@
         @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
 
         /* Horizontal Scroll Container */
-        .horizontal-scroll-wrapper { width: 300vw; height: 100vh; display: flex; flex-wrap: nowrap; }
+        .horizontal-scroll-wrapper { width: 500vw; height: 100vh; display: flex; flex-wrap: nowrap; }
 
         .section-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: #888; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 2rem; }
         .reveal-up { opacity: 0; transform: translateY(60px); }
@@ -437,6 +437,22 @@
                     </button>
                 </div>
 
+                <div class="project-panel w-screen h-screen flex flex-col justify-center items-center px-8 md:px-32 relative">
+                    <button onclick="showModal('rfq')" class="cursor-pointer hover-target text-left group">
+                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">04.</div>
+                        <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">British Auction<br>RFQ</h3>
+                        <p class="text-gray-400 text-xl font-light">Reverse British-auction RFQ platform where suppliers undercut each other in real time.</p>
+                    </button>
+                </div>
+
+                <div class="project-panel w-screen h-screen flex flex-col justify-center items-center px-8 md:px-32 relative">
+                    <button onclick="showModal('healthcare')" class="cursor-pointer hover-target text-left group">
+                        <div class="text-6xl md:text-8xl font-bold display-font mb-8">05.</div>
+                        <h3 class="text-5xl md:text-7xl font-bold mb-6 group-hover:italic transition-all inline-block border-b-2 border-transparent group-hover:border-white">Healthcare Management<br>System</h3>
+                        <p class="text-gray-400 text-xl font-light">Full-stack patient and doctor management with secure JWT access control.</p>
+                    </button>
+                </div>
+
             </div>
         </section>
 
@@ -650,6 +666,62 @@
                 ],
                 github: "https://github.com/springboardmentor0316/Maritime-Vessel-Tracking-Team-2.git",
                 live: null
+            },
+            rfq: {
+                title: "British Auction RFQ",
+                overview: "Full-stack RFQ (Request for Quotation) platform that runs reverse \"British auction\" bidding — suppliers openly outbid each other downward in price, the lowest bidder leads the ranking, and a countdown auto-extension engine keeps the auction alive when competing bids arrive near the close.",
+                problem: "Traditional RFQs are static, sealed requests — suppliers submit one quote and have no incentive to sharpen pricing. This platform turns sourcing into a transparent, live reverse auction: suppliers undercut each other in plain sight, so the buyer watches the lowest price form in real time while deadline extensions prevent last-second sniping.",
+                features: [
+                    "Reverse British-auction engine — a bid must beat both the supplier's own best and the competitive price",
+                    "Countdown auto-extension within a trigger window, capped by a forced close time",
+                    "Race-safe bidding via SELECT ... FOR UPDATE, serializing concurrent bids per auction",
+                    "Live WebSocket bidding room broadcasting bids, rankings, and extensions in real time",
+                    "Deterministic per-supplier ranking using ROW_NUMBER() window functions",
+                    "Immutable activity log of every bid, extension, and close; JWT auth with BUYER/SUPPLIER roles"
+                ],
+                techStack: "FastAPI • SQLAlchemy 2 • Pydantic v2 • PostgreSQL • WebSockets • JWT (HS256) • Bcrypt • React 18 • TypeScript • Vite • Tailwind CSS • Docker Compose • Nginx • Pytest",
+                architecture: {
+                    frontend: "React 18 + TypeScript SPA (Vite) — live bidding room driven by a useAuctionSocket hook (auto-reconnect) and countdowns that re-target against server close times; Vite/Nginx proxy REST + WebSocket to the backend",
+                    backend: "Layered FastAPI app — core (JWT, bcrypt, UTC time), models, Pydantic schemas, AuctionService (bidding + extension engine), AuctionView (state/ranking/activity), and a per-auction WebSocket ConnectionManager",
+                    database: "PostgreSQL 16 — users, suppliers, rfqs, quotes, bids, auction_events; status derived lazily from timestamps; rankings via ROW_NUMBER() window functions (SQLite for local dev/tests)"
+                },
+                deployment: "Fully containerized with Docker Compose — Postgres 16, FastAPI backend, and Nginx-served React frontend with WebSocket-aware proxying; the backend seeds demo data on first boot. No public production deployment is configured.",
+                outcome: "Designed and shipped a real reverse-auction domain end-to-end: bid-acceptance rules, window-based extension math capped by a forced close, row-lock bid concurrency, and server-authoritative real-time state over WebSockets — verified by 22 pytest tests plus an end-to-end API smoke test.",
+                endpoints: [
+                    { group: "Authentication", routes: ["POST /api/auth/register", "POST /api/auth/login"] },
+                    { group: "Auction", routes: ["POST /api/rfqs", "GET /api/rfqs/{id}/ranking", "POST /api/rfqs/{id}/bids"] },
+                    { group: "Live Updates", routes: ["WS /api/ws/rfqs/{id}?token=<jwt>"] }
+                ],
+                github: "https://github.com/AaryanThota26/British-Auction-RFQ.git",
+                live: null
+            },
+            healthcare: {
+                title: "Healthcare Management System",
+                overview: "Full-stack healthcare management application — Django REST Framework backend with a React (Vite) frontend for managing patient records, doctor records, and patient–doctor assignments behind JWT authentication with strict per-user ownership.",
+                problem: "Patient and doctor data in smaller clinics is often scattered across spreadsheets with no access control or record of who created what. This system centralizes records and assignments behind a secure API where every user sees only their own data, with database-level constraints preventing duplicate doctor assignments.",
+                features: [
+                    "Custom UUID user model with email-based registration and JWT login",
+                    "JWT authentication (SimpleJWT) with protected frontend routes and Axios token interceptor",
+                    "Patient CRUD with strict ownership enforcement — users only access records they created",
+                    "Doctor CRUD with unique email and specialization",
+                    "Patient–Doctor mappings with DB-level UNIQUE (patient, doctor) duplicate prevention",
+                    "Dashboard summary statistics and interactive Swagger UI / ReDoc documentation"
+                ],
+                techStack: "Django 4.2 • Django REST Framework • SimpleJWT • drf-spectacular • django-cors-headers • PostgreSQL 16 • React 19 (Vite) • React Router 7 • Axios • Nginx • Gunicorn • Docker Compose",
+                architecture: {
+                    frontend: "React 19 SPA (Vite) with React Router 7 and Axios — AuthContext manages JWT tokens, ProtectedRoute guards pages, and an interceptor attaches the bearer token and redirects on 401",
+                    backend: "Django 4.2 + DRF split into users, patients, doctors, and mappings apps (models → serializers → views → urls); DRF generic views with IsAuthenticated by default and ownership enforced via created_by filtering",
+                    database: "PostgreSQL 16 — UUID primary keys; Patient has a created_by owner FK; patient–doctor pairs enforce UNIQUE (patient, doctor); data persisted in a named Docker volume"
+                },
+                deployment: "Containerized with Docker Compose — Gunicorn-served Django API (port 8000), Nginx-served React frontend (port 80), and a health-gated PostgreSQL service; the entrypoint runs migrations and collectstatic automatically. No public production deployment is configured.",
+                outcome: "Built a complete secure full-stack system: custom-user JWT auth, query-level data ownership, and database-level integrity — validated by Django tests covering duplicate-assignment rejection and cross-user access denial, plus a three-service Compose deployment.",
+                endpoints: [
+                    { group: "Authentication", routes: ["POST /api/auth/register/", "POST /api/auth/login/"] },
+                    { group: "Core Features", routes: ["GET /api/patients/", "GET /api/doctors/", "POST /api/mappings/"] },
+                    { group: "API Documentation", routes: ["GET /api/docs/"] }
+                ],
+                github: "https://github.com/AaryanThota26/Healthcare-Backend.git",
+                live: null
             }
         };
 
@@ -797,7 +869,7 @@
         const scrollWrapper = document.getElementById('projects-scroll');
         const mm = gsap.matchMedia();
         mm.add("(min-width: 1024px)", () => {
-            const tween = gsap.to(scrollWrapper, { xPercent: -66.6667, ease: "none", scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 0.5, end: () => "+=" + scrollWrapper.offsetWidth } });
+            const tween = gsap.to(scrollWrapper, { xPercent: -80, ease: "none", scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 0.5, end: () => "+=" + scrollWrapper.offsetWidth } });
             return () => { if (tween.scrollTrigger) tween.scrollTrigger.kill(); };
         });
 
